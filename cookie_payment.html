@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://sandbox.cookiepayments.com/js/cookiepayments-1.1.3.js"></script>
+<script>
+cookiepayments.init({
+    api_id: 'sandbox_WXnlp90aey', // 쿠키페이 연동 ID
+});
+
+// URL 변경 감지 및 상태 전달
+function notifyThunkable(status) {
+    // Thunkable WebViewer에 메시지 전달
+    window.location.href = `thunkable://payment_status?status=${status}`;
+}
+
+// 자동 결제 요청
+function pay_request() {
+    cookiepayments.payrequest({
+        ORDERNO: "20241128_1732720662",
+        PRODUCTNAME: "테스트 상품",
+        AMOUNT: "1004",
+        BUYERNAME: "홍길동",
+        RETURNURL: "https://sandbox.cookiepayments.com/payRec/pay_success",
+    });
+
+    // 성공 또는 실패에 따라 상태 전달
+    setTimeout(() => notifyThunkable('success'), 3000); // 결제 성공 예시
+    // setTimeout(() => notifyThunkable('failure'), 3000); // 결제 실패 예시
+}
+
+// 페이지 로드 시 결제 요청 실행
+document.addEventListener('DOMContentLoaded', pay_request);
+</script>
+</body>
+</html>

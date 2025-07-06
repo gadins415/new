@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>강펫택시 광고관리</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; }
+        .container { max-width: 800px; margin: 50px auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        h2 { color: #333; }
+        .btn { display: block; width: 100%; padding: 10px; margin: 10px 0; text-decoration: none; background: #0073e6; color: white; border-radius: 5px; }
+        .btn:hover { background: #005bb5; }
+    </style>
+    <script>
+        document.addEventListener("contextmenu", function(event) { event.preventDefault(); });
+        document.addEventListener("keydown", function(event) { if (event.key === "F12") { event.preventDefault(); } });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>강펫택시 광고 관리</h2>
+        
+        <h3>광고 관리자</h3>
+        <a href="https://searchad.naver.com/" target="_blank" class="btn">네이버 검색광고</a>
+        <a href="https://displayad.naver.com/" target="_blank" class="btn">네이버 디스플레이광고</a>
+        <a href="https://ads.google.com/" target="_blank" class="btn">구글애즈 검색광고</a>
+        <a href="https://admanager.google.com/" target="_blank" class="btn">구글 디스플레이광고</a>
+        <a href="https://play.google.com/console/" target="_blank" class="btn">Google Play Store 광고</a>
+        <a href="https://searchads.apple.com/" target="_blank" class="btn">애플 서치 애즈</a>
+        
+        <h3>광고 사이트</h3>
+        <a href="https://search.naver.com/search.naver?query=%ED%8E%AB%ED%83%9D%EC%8B%9C" target="_blank" class="btn">네이버 PC 검색</a>
+        <a href="https://m.search.naver.com/search.naver?query=%ED%8E%AB%ED%83%9D%EC%8B%9C" target="_blank" class="btn">네이버 모바일 검색</a>
+        <a href="https://www.youtube.com/results?search_query=%ED%8E%AB%ED%83%9D%EC%8B%9C" target="_blank" class="btn">YouTube 검색</a>
+        <a href="https://www.instagram.com/explore/tags/%ED%8E%AB%ED%83%9D%EC%8B%9C/" target="_blank" class="btn">Instagram 검색</a>
+        <a href="https://www.google.com/search?q=%ED%8E%AB%ED%83%9D%EC%8B%9C" target="_blank" class="btn">Google 검색</a>
+        <a href="https://apps.apple.com/kr/search?term=%ED%8E%AB%ED%83%9D%EC%8B%9C" target="_blank" class="btn">App Store 검색</a>
+    </div>
+</body>
+</html>

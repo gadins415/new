@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>구글 간편 로그인</title>
+  <meta name="google-signin-client_id" content="404036043806-2qqkd394ms45o6ucjqsp2gh81ftm2hrt.apps.googleusercontent.com">
+  <script src="https://apis.google.com/js/platform.js?onload=onGoogleLoad"></script>
+</head>
+<body>
+  <h1>구글 간편 로그인</h1>
+
+  <div id="g_signin_button"></div>
+
+  <script>
+    function onGoogleLoad() {
+      gapi.load('auth2', function() {
+        // Google Login 버튼 생성 및 설정
+        var auth2 = new gapi.auth2.GoogleUser({
+          client_id: '404036043806-2qqkd394ms45o6ucjqsp2gh81ftm2hrt.apps.googleusercontent.com',
+          scope: 'profile email phone' // 전화번호 정보 추출을 위해 'phone' 범위 추가
+        });
+
+        auth2.attachClickHandler('g_signin_button', {}, function(googleUser) {
+          // 로그인 성공 처리
+          var profile = googleUser.getBasicProfile();
+          console.log('ID: ' + profile.getId());
+          console.log('이름: ' + profile.getName());
+          console.log('이메일: ' + profile.getEmail());
+          console.log('전화번호: ' + profile.getPhone()); // 전화번호 정보 출력
+        });
+      });
+    }
+  </script>
+</body>
+</html>

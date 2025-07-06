@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮🐶춘식이 간식 잡아주기🎮🐶</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: url('https://kanggadintaxi.shop/background_dog.jpg') no-repeat center center/cover;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+        }
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+        h1 {
+            margin: 10px;
+            font-size: 24px;
+            color: white;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            display: inline-block;
+            border-radius: 10px;
+        }
+        #choonsik {
+            position: absolute;
+            bottom: 250px;
+            left: 10px;
+            width: 80px;
+            height: auto;
+        }
+        .snack {
+            position: absolute;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        #score-board {
+            position: absolute;
+            bottom: 250px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 20px;
+        }
+        /* 다이얼로그 박스 스타일 */
+        #dialog {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+            display: none;
+            text-align: center;
+            width: 80%;
+            max-width: 400px;
+        }
+        #dialog-message {
+            font-size: 18px;
+            color: #333;
+            white-space: pre-line;
+        }
+        .dialog-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #ffcc00;
+            border: none;
+            cursor: pointer;
+            margin-top: 15px;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+        .dialog-button:hover {
+            background-color: #ffaa00;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1>🎮🐶춘식이 간식 잡아주기🎮🐶</h1>
+        <img id="choonsik" src="/choonsik_dog.png" alt="춘식이">
+        <div id="score-board">점수: 0</div>
+    </div>
+
+    <!-- 다이얼로그 창 -->
+    <div id="dialog">
+        <p id="dialog-message"></p>
+        <button id="dialog-button" class="dialog-button">확인</button>
+    </div>
+
+    <audio id="bgm" src="/bgm.mp3" loop></audio>
+    <audio id="good-sound" src="/good.m4a"></audio>
+    <audio id="bad-sound" src="/bad.mp3"></audio>
+
+    <script>
+        const gameContainer = document.getElementById("game-container");
+        const scoreBoard = document.getElementById("score-board");
+        const dialog = document.getElementById("dialog");
+        const dialogMessage = document.getElementById("dialog-message");
+        const dialogButton = document.getElementById("dialog-button");
+
+        const bgm = document.getElementById("bgm");
+        const goodSound = document.getElementById("good-sound");
+        const badSound = document.getElementById("bad-sound");
+
+        const goodSnacks = ['🍎', '🍗', '🥕'];
+        const badSnacks = ['🍫', '🍇', '🥑'];
+        let score = 0;
+        let totalScore = 0;
+        let gameRunning = false;
+        let gameTimer;
+        let level = 1;
+
+        bgm.volume = 0.2; // 배경음 볼륨 낮춤
+
+        function showDialog(message, callback) {
+            dialogMessage.textContent = message;
+            dialog.style.display = "block";
+            dialogButton.onclick = () => {
+                dialog.style.display = "none";
+                if (callback) callback();
+            };
+        }
+
+        function startGame() {
+            score = 0;
+            gameRunning = true;
+            updateScore();
+            bgm.play();
+
+            let snackInterval = 1000 - (level * 100); // 레벨별 스피드 증가
+            let snackCount = level; // 레벨별 과일 개수 증가
+
+            gameTimer = setTimeout(endGame, 30000);
+            setInterval(() => {
+                for (let i = 0; i < snackCount; i++) {
+                    dropSnack();
+                }
+            }, snackInterval);
+        }
+
+        function dropSnack() {
+            if (!gameRunning) return;
+
+            const snack = document.createElement("div");
+            snack.classList.add("snack");
+
+            const isGoodSnack = Math.random() < 0.7;
+            snack.textContent = isGoodSnack ? 
+                goodSnacks[Math.floor(Math.random() * goodSnacks.length)] : 
+                badSnacks[Math.floor(Math.random() * badSnacks.length)];
+
+            snack.style.left = Math.random() * (window.innerWidth - 30) + "px";
+            snack.style.top = "0px";
+            gameContainer.appendChild(snack);
+
+            let fallInterval = setInterval(() => {
+                snack.style.top = parseInt(snack.style.top) + 5 + "px";
+                if (parseInt(snack.style.top) > window.innerHeight - 100) {
+                    clearInterval(fallInterval);
+                    snack.remove();
+                }
+            }, 50);
+
+            snack.addEventListener("click", () => {
+                if (!gameRunning) return;
+                if (badSnacks.includes(snack.textContent)) {
+                    score -= 1;
+                    badSound.play();
+                } else {
+                    score += 1;
+                    goodSound.play();
+                }
+                updateScore();
+                snack.remove();
+            });
+        }
+
+        function updateScore() {
+            scoreBoard.textContent = `점수: ${totalScore + score}`;
+        }
+
+        function endGame() {
+            gameRunning = false;
+            bgm.pause();
+            document.querySelectorAll(".snack").forEach(snack => snack.remove());
+
+            totalScore += score;
+            let timestamp = new Date().toLocaleString();
+
+            if (level < 3 && totalScore >= 10) {
+                showDialog(`Level ${level} 클리어!\n\n현재 점수: ${totalScore}\n다음 단계 도전?`, () => {
+                    level++;
+                    startGame();
+                });
+            } else if (level === 3 && totalScore >= 10) {
+                showDialog(`🎉 모든 레벨 클리어!\n\n최종 점수: ${totalScore}점\n게임시간: ${timestamp}\n화면을 캡쳐하고 쿠폰을 받으세요!`, () => {
+                    window.location.href = "http://pf.kakao.com/_YTpWxj/chat";
+                    setTimeout(() => {
+                        level = 1;
+                        totalScore = 0;
+                        showDialog("🍎 춘식이 간식을 잡아 주세요!\n🍫 먹으면 앙대요.\n🎮 그럼 시이작~~", startGame);
+                    }, 1000);
+                });
+            }
+        }
+
+        window.onload = () => {
+	    level = 1; // 레벨 초기화
+    	    totalScore = 0; // 총 점수 초기화
+            showDialog("🍎 춘식이 간식을 잡아 주세요!\n🍫 먹으면 앙대요.\n🎮 그럼 시이작~~", startGame);
+        };
+    </script>
+</body>
+</html>

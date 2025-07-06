@@ -1,0 +1,22 @@
+<!--
+/* 기본 스타일 */
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+-->
+/* PC 스타일 (최소 너비 768px 이상) */
+@media (min-width: 768px) {
+  body {
+    width: 768px;
+    margin: 0 auto; /* 가운데 정렬 */
+  }
+}
+
+/* 모바일 스타일 (최대 너비 767px 이하) */
+@media (max-width: 767px) {
+  body {
+    width: 100%; /* 기기 너비 100% */
+    overflow-x: hidden; /* 가로 스크롤 감추기 */
+  }
+}

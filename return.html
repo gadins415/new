@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Return</title>
+    <script>
+        // URL에서 transactionId 및 플랫폼 추출
+        const urlParams = new URLSearchParams(window.location.search);
+        const transactionId = urlParams.get("transactionId");
+        const platform = navigator.userAgent.includes("Android") ? "android" : "ios";
+
+        // Transaction ID 확인 및 경고 메시지
+        if (!transactionId) {
+            alert("Transaction ID is missing. Cannot proceed.");
+            window.postMessage("FAILURE", "*");
+        } else {
+            alert("Transaction ID received: " + transactionId); // Transaction ID 확인
+        }
+
+        // 백엔드로 transactionId 및 플랫폼 전송
+        if (transactionId) {
+            fetch("https://kanggadintaxi.shop/processPayment", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ transactionId, platform }),
+            })
+            .then(response => {
+                // 응답 상태 확인
+                if (!response.ok) {
+                    alert("Backend responded with status: " + response.status);
+                    return Promise.reject(new Error("Failed to process payment."));
+                }
+                return response.json();
+            })
+            .then(data => {
+                // 백엔드 응답 처리
+                if (data.status === "SUCCESS") {
+                    alert("Transaction approved! Card: " + data.cardName + ", App URL: " + data.appUrl);
+                    window.postMessage(data.appUrl, "*"); // WebViewer로 appUrl 전달
+                } else {
+                    alert("Transaction failed: " + data.message);
+                    window.postMessage("FAILURE", "*"); // 실패 메시지 전달
+                }
+            })
+            .catch(error => {
+                alert("Error communicating with server: " + error.message);
+                window.postMessage("FAILURE", "*"); // 실패 메시지 전달
+            });
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>

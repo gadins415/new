@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>망고 복권방</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            background-color: #f9f9f9;
+            height: 100vh;
+        }
+
+        /* 왼쪽 3/4 */
+        .left {
+            width: 75%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .left h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .qr-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .qr-section img {
+            width: 250px;
+            margin: 10px 0;
+        }
+
+        .instructions {
+            font-size: 16px;
+            line-height: 1.6;
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        /* 오른쪽 1/4 */
+        .right {
+            width: 25%;
+            padding: 20px;
+            background-color: #ffffff;
+            text-align: center;
+            border-left: 2px solid #ddd;
+        }
+
+        .right img {
+            width: 80%;
+            margin-bottom: 20px;
+        }
+
+        .right h2 {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        /* 음악 제어 버튼 */
+        .music-control {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- 왼쪽 3/4 -->
+    <div class="left">
+        <h1><strong>망고 복권방 QR 입금하기 (농협 351-1333-7611-93 이주원)</strong></h1>
+        <div class="qr-section">
+            <img src="https://kanggadintaxi.shop/manggoQR.png" alt="망고 복권방 QR 코드">
+            <div class="instructions">
+                <h2><p>1. 카메라로 QR 코드를 찍는다.</p>
+                <p>2. 입금정보를 클립보드로 복사한다.</p>
+                <p>3. 은행앱을 연다.</p>
+                <p>4. 구매금액을 입력하고 송금한후 폰화면 보여주세요..</p></h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- 오른쪽 1/4 -->
+    <div class="right">
+        <h2><strong>🐶협찬펫택시 : 강펫택시</strong></h2>
+        <img src="https://kanggadintaxi.shop/kangpetB.png" alt="강펫 로고">
+        <h2><p>강펫택시 앱 다운로드</p></h2>
+        <img src="https://kanggadintaxi.shop/kangpetQR.png" alt="강펫택시 QR 코드">
+        <h2><p><strong>강펫택시가 대박 1등을 기원합니다!</strong></p></h2>
+    </div>
+
+    <!-- 음악 제어 버튼 -->
+    <div class="music-control" id="toggleSound">소리 끄기</div>
+
+    <!-- 배경 음악 -->
+    <audio id="bgMusic" autoplay loop>
+	<source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
+        브라우저가 오디오 태그를 지원하지 않습니다.
+    </audio>
+
+    <script>
+        // 소리 끄기/켜기 기능
+        const musicControlButton = document.getElementById('toggleSound');
+        const bgMusic = document.getElementById('bgMusic');
+
+        let isMuted = false;
+        musicControlButton.onclick = function() {
+            isMuted = !isMuted;
+            bgMusic.muted = isMuted;
+            musicControlButton.textContent = isMuted ? '소리 켜기' : '소리 끄기';
+        }
+    </script>
+</body>
+</html>

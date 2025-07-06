@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Firebase Phone Auth + FB UI</title>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <!-- Firebase Realtime Database SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+  <!-- Firebase UI -->
+  <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
+</head>
+<body>
+  <h2>Firebase Auth and Login</h2>
+  <div>
+    <label for="email">Email:</label>
+    <input type="text" id="email" placeholder="Enter your email">
+    <button onclick="login()">Login</button>
+  </div>
+
+  <script>
+     // Firebase 초기화
+    var firebaseConfig = {
+      apiKey: "AIzaSyBlazD0JCDcplvuLrPhla1V34d7hsIrbXg",
+    authDomain: "kanggadin-taxi.firebaseapp.com",
+    databaseURL: "https://kanggadin-taxi-default-rtdb.firebaseio.com",
+    projectId: "kanggadin-taxi",
+    storageBucket: "kanggadin-taxi.appspot.com",
+    messagingSenderId: "404036043806",
+    appId: "1:404036043806:web:98ae408d342d16abd39a0f",
+    measurementId: "G-20QC9FFV1K"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+
+        //    firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+      //    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      //    firebase.auth.AppleAuthProvider.PROVIDER_ID,
+      //    firebase.auth.EmailAuthProvider.PROVIDER_ID,
+      //    firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID
+
+      function login() {
+      var email = document.getElementById('email').value;
+      var password = "123457"; // 임시 비밀번호 설정
+
+      // 기존 로그인 시도
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(function(userCredential) {
+          console.log('Login successful:', userCredential);
+          handleSignedInUser(userCredential.user, email, password);
+        })
+        .catch(function(error) {
+          console.error('Login failed:', error);
+          // 사용자 없음(auth/user-not-found) 오류 처리
+          // auth/invalid-login-credentials
+          if (error.code === 'auth/invalid-login-credentials') {
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+              .then(function(userCredential) {
+                console.log('User registration successful:', userCredential);
+                handleSignedInUser(userCredential.user, email, password);
+              })
+              .catch(function(error) {
+                console.error('User registration failed:', error);
+              });
+          }
+        });
+    }
+
+    function handleSignedInUser(user, email, password) {
+      var userDataRef = firebase.database().ref('UserData/010-1111-3333');
+      userDataRef.set({
+        Email: email,
+        Password: password
+      }).then(function() {
+        console.log("UserData saved successfully.");
+
+        var callDataRef = firebase.database().ref('CallData/202407071830');
+        callDataRef.once('value').then(function(snapshot) {
+          var callData = snapshot.val();
+          alert(JSON.stringify(callData));
+
+          callDataRef.update({ GisaTelno: "010-1111-3333" });
+        }).catch(function(error) {
+          console.error("Error reading CallData:", error);
+        });
+      }).catch(function(error) {
+        console.error("Error saving UserData:", error);
+      });
+
+      // 이메일과 비밀번호를 로컬 저장소에 저장
+      localStorage.setItem('userEmail', email);
+      localStorage.setItem('userPassword', password);
+    }
+
+    // 자동 로그인 시도
+    window.onload = function() {
+      var email = localStorage.getItem('userEmail');
+      var password = localStorage.getItem('userPassword');
+
+      if (email && password) {
+        firebase.auth().signInWithEmailAndPassword(email, password)
+          .then(function(userCredential) {
+            console.log('Auto login successful:', userCredential);
+            handleSignedInUser(userCredential.user, email, password);
+          })
+          .catch(function(error) {
+            console.error('Auto login failed:', error);
+          });
+      }
+    };
+  
+  </script>
+</body>
+</html>

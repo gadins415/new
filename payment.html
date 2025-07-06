@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payup 결제</title>
+    <script src="https://standard.testpayup.co.kr/assets/js/payup_standard_dev-1.0.js"></script>
+    <script>
+        // URL의 쿼리 매개변수 가져오기
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                itemName: params.get("itemName"),
+                amount: params.get("amount"),
+                userName: params.get("userName"),
+                orderNumber: params.get("orderNumber"),
+            };
+        }
+
+        // 페이지 로드 시 결제창 실행
+        window.onload = function() {
+            const data = getQueryParams();
+            if (data.itemName && data.amount && data.userName && data.orderNumber) {
+                var paymentData = {
+                    merchantId: "kanggadin_test", // 필수 값
+                    itemName: data.itemName,
+                    amount: data.amount,
+                    userName: data.userName,
+                    orderNumber: data.orderNumber,
+                    returnUrl: "https://kanggadintaxi.shop/return.html", // 필수 값
+                    // appUrl: "placeholder" // 앱 스키마 (선택)
+                };
+                // Payup 표준 결제창 SDK 실행
+                alert("Payment initiated with orderNumber: " + data.orderNumber);
+                goPayupPay(paymentData);
+            } else {
+                alert("필수 결제 정보가 누락되었습니다.");
+            }
+        };
+    </script>
+</head>
+<body>
+    <h1>Payup 결제 처리 중...</h1>
+</body>
+</html>
+
+

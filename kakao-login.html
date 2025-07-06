@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>카카오 간편 로그인</title>
+  <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+</head>
+<body>
+  <h1>카카오 간편 로그인</h1>
+
+  <div id="kakao_login_btn"></div>
+
+  <script>
+    // 카카오 API 키 설정
+    Kakao.API_KEY = "ba053971ff87fba7e3e336fe93ac5d1e";
+    YOUR_REDIRECT_URI = "https://kanggadintaxi.shop/icons/kakao-Oauth.html";
+
+    // 로그인 버튼 생성
+    const kakaoLoginBtn = document.createElement("a");
+    kakaoLoginBtn.href = `https://kauth.kakao.com/oauth2/authorize?client_id=${Kakao.API_KEY}&redirect_uri=${YOUR_REDIRECT_URI}&response_type=code&scope=profile,account_email,phone`;
+    kakaoLoginBtn.textContent = "카카오 로그인";
+    kakaoLoginBtn.style.cssText = "display: block; padding: 10px 20px; background-color: #F7DA4F; color: #333; text-decoration: none;";
+    document.getElementById("kakao_login_btn").appendChild(kakaoLoginBtn);
+
+    // 콜백 URL 처리
+    Kakao.Auth.setफीस(function(authObj) {
+      if (authObj.hasToken()) {
+        // 액세스 토큰 발급
+        Kakao.API.request({
+          url: "/v2/user/me",
+          headers: { Authorization: `Bearer ${authObj.accessToken}` },
+          success: function(result) {
+            const profile = result.profile;
+            const email = profile.email;
+            const phoneNumber = profile.mobile_no; // 전화번호 추출
+
+            // 사용자 정보 출력
+            alert(`이메일: ${email}\n전화번호: ${phoneNumber}`);
+          },
+          error: function(error) {
+            console.error(error);
+          }
+        });
+      } else {
+        console.log("로그인 취소");
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  console.log('beforeinstallprompt Event fired');
+  e.preventDefault();
+  deferredPrompt = e;
+});
+
+function installPassengerPWA() {
+  if (deferredPrompt) {
+    const manifestPlaceholder = document.getElementById('manifest-placeholder');
+    manifestPlaceholder.setAttribute('href', 'manifest-passenger.json');
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+      } else {
+        console.log('User dismissed the install prompt');
+      }
+      deferredPrompt = null;
+    });
+  } else {
+    console.log('No deferredPrompt found');
+  }
+}
+
+function installDriverPWA() {
+  if (deferredPrompt) {
+    const manifestPlaceholder = document.getElementById('manifest-placeholder');
+    manifestPlaceholder.setAttribute('href', 'manifest-driver.json');
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+      } else {
+        console.log('User dismissed the install prompt');
+      }
+      deferredPrompt = null;
+    });
+  } else {
+    console.log('No deferredPrompt found');
+  }
+}
+
+document.getElementById('install-passenger-button').addEventListener('click', installPassengerPWA);
+document.getElementById('install-driver-button').addEventListener('click', installDriverPWA);
+
+// Register service worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js')
+  .then((registration) => {
+    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+  })
+  .catch((error) => {
+    console.log('ServiceWorker registration failed: ', error);
+  });
+}
+

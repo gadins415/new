@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://democpay.payple.kr/js/v1/payment.js"></script>
+</head>
+<body>
+    <script>
+        $(document).ready(function () {
+            // URL에서 파라미터 가져오기
+            const urlParams = new URLSearchParams(window.location.search);
+            const productName = urlParams.get('productName') || "테스트 상품";
+            const totalAmount = urlParams.get('totalAmount') || 1000;
+
+            // 다이렉트 POST 방식으로 결제
+            function submitDirectPayment() {
+                const form = document.createElement("form");
+                form.setAttribute("method", "POST");
+                form.setAttribute("action", "https://checkout.teledit.com/creditcard_std/web");
+                form.style.display = "none";
+
+                // Hidden input fields for payment data
+                const inputs = [
+                    { name: "PCD_PAY_GOODS", value: productName },
+                    { name: "PCD_PAY_TOTAL", value: totalAmount }
+                ];
+
+                // Add inputs to the form
+                inputs.forEach(inputData => {
+                    const input = document.createElement("input");
+                    input.type = "hidden";
+                    input.name = inputData.name;
+                    input.value = inputData.value;
+                    form.appendChild(input);
+                });
+
+                // Append form to body and submit
+                document.body.appendChild(form);
+                form.submit();
+            }
+
+            // Check for mobile environment and decide the method
+            const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+            if (isMobile) {
+                // Use direct POST method for mobile environments
+                submitDirectPayment();
+            } else {
+                // Use Payple method for non-mobile environments
+                let obj = {};
+                obj.clientKey = "test_DF55F29DA654A8CBC0F0A9DD4B556486";
+                obj.PCD_PAY_TYPE = "card";
+                obj.PCD_PAY_WORK = "CERT";
+                obj.PCD_CARD_VER = "02";
+                obj.PCD_PAY_GOODS = productName;
+                obj.PCD_PAY_TOTAL = totalAmount;
+                obj.PCD_RST_URL = "https://kanggadintaxi.shop/result";
+
+                PaypleCpayAuthCheck(obj);
+            }
+        });
+    </script>
+</body>
+</html>
+

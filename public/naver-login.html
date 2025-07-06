@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>네이버 간편 로그인</title>
+</head>
+<body>
+  <h1>네이버 간편 로그인</h1>
+  <div id="naver_login_btn"></div>
+  <script>
+    const clientId = "K4oAfquhJNWQcKSKesc0";
+    const callbackUrl = "http://kanggadintaxi.shop:3000/callback";
+
+    const naverLoginBtn = document.createElement("a");
+    naverLoginBtn.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${callbackUrl}&scope=profile`;
+    naverLoginBtn.textContent = "네이버 로그인";
+    naverLoginBtn.style.cssText = "display: block; padding: 10px 20px; background-color: #009ACD; color: white; text-decoration: none;";
+    document.getElementById("naver_login_btn").appendChild(naverLoginBtn);
+  </script>
+</body>
+</html>

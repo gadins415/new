@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>강가딘 택시</title>
+    <style>
+        /* 간단한 스타일 추가 */
+        .install-button {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>안녕하세요. 강가딘택시입니다!</h1>
+    <p>브라우저 메뉴에서 "홈화면에 추가"해주세요^^</p>
+    <button id="installButton" class="install-button">홈화면에 추가</button>
+    <script>
+    <!--    if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
+        } -->
+        let deferredPrompt;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // 프롬프트 기본 동작 방지
+            e.preventDefault();
+            // 이벤트 저장
+            deferredPrompt = e;
+            // 설치 버튼 표시
+            const installButton = document.getElementById('installButton');
+            installButton.style.display = 'block';
+
+            installButton.addEventListener('click', () => {
+                // 프롬프트 표시
+                deferredPrompt.prompt();
+                // 사용자 선택 결과 처리
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    } else {
+                        console.log('User dismissed the install prompt');
+                    }
+                    // 이벤트 재설정
+                    deferredPrompt = null;
+                    // 버튼 숨기기
+                    installButton.style.display = 'none';
+                });
+            });
+        });
+
+        window.addEventListener('appinstalled', (evt) => {
+            console.log('PWA was installed');
+        });
+    </script>
+</body>
+</html>

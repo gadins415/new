@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/icons/icon-passenger-192.png">
+    <link rel="apple-touch-icon" href="/icons/icon-passenger-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>강가딘택시 펫페용앱</title>
+    <style>
+        body, html { 
+            font-family: Arial, sans-serif;
+            height: 100%;
+	    width: 100%;
+	    margin: 0;
+            padding: 0;
+            background-color: #ffffff; /* white */
+            display: flex;
+            justify-content: top;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        h1 {
+            color: #000080; /* dark navy */
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input {
+            font-size: 16px;
+            margin: 10px 0;
+            padding: 10px;
+	          height: 20px;
+            width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+	.container {
+	      text-align: center
+    	}
+    	.container button {
+	      margin: 5px;
+	      padding: 10px 20px;
+	      background-color: #000000;
+	      color: white;
+	      border: none;
+	      border-radius: 5px;
+	      cursor: pointer;
+    	}
+      footer {
+        position: fixed;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      footer button {
+        margin: 5px;
+        padding: 5px 10px;
+        font-size: 12px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+        button {
+            font-size: 16px;
+            margin: 10px 0;
+            padding: 10px 20px;
+            height: 50px;
+            width: 270px;
+            background-color: #000080; /* dark navy */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex; /* 버튼을 flexbox 컨테이너로 설정 */
+            align-items: center; /* 버튼 내용을 가운데 정렬 */
+            justify-content: center; /* 버튼 내용을 가운데 정렬 */
+        }
+        
+        button img {
+          flex: 1; /* 이미지가 사용 가능한 공간을 채우도록 설정 */
+          margin-right: 10px; /* 이미지와 텍스트 사이 간격 설정 */
+        }
+
+        .social-login {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .social-login img {
+            margin: 0 1%;
+            width: 65px;
+            height: 65px;
+            cursor: pointer;
+        }
+        .notice {
+            background-color: #ffffe0; /* pastel yellow */
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+/* PC 스타일 (최소 너비 768px 이상) */
+@media (min-width: 768px) {
+  body {
+    width: 768px;
+    margin: 0 auto; /* 가운데 정렬 */
+  }
+}
+
+/* 모바일 스타일 (최대 너비 767px 이하) */
+@media (max-width: 767px) {
+  body {
+    width: calc(100vw - 20px); /* 브라우저 너비 - 여백 */
+    margin: 0; /* 여백 제거 */
+    /* width: 100%;  기기 너비 100% */
+    height: 100vh; /* 화면 높이 100% */
+    overflow: hidden; /* 스크롤 감추기 */
+  }
+}
+
+.agreement-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70%;
+            background-color: white;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-out;
+            transform: translateY(100%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .agreement-container.active {
+            transform: translateY(0);
+        }
+        
+        .agreement-content {
+            height: 60%;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .agreement-checkbox {
+            height: 10%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top: 1px solid #ccc;
+        }
+        
+        .initial-checkbox {
+            margin-top: 20px;
+            height: 10%;
+            display: flex;
+            align-items: left;
+            justify-content: left;
+            border-top: 1px solid #ccc;
+        }
+
+
+    </style>
+
+</head>
+<body>
+    <h1>강가딘택시 빠르게 이용하기</h1>
+    <img src="img/taxi_image.png" alt="Kanggadin Taxi" width="200">
+    <form>
+        <input type="text" id="dogName" placeholder="반려동물 이름" required>
+        <input type="tel" id="phoneNumber1" placeholder="010-1234-5678" required>
+        <input type="password" id="phoneNumber2" placeholder="전화번호 재입력" required>
+        <!--<button onclick="login()">로 그 인</button>-->
+        <button type="button" onclick="login()">로 그 인</button>
+    </form>
+    <div class="social-login">
+      <img src="img/kanggadin_icon.png" alt="Kanggadin" onclick="socialLogin('kanggadin')">
+      <img src="img/naver_icon.png" alt="Naver" onclick="socialLogin('naver')">
+      <img src="img/kakao_icon.png" alt="Kakao" onclick="socialLogin('kakao')">
+      <img src="img/google_icon.png" alt="Google" onclick="socialLogin('google')">
+  </div>
+   
+    <form>
+      <center><input type="checkbox" id="initialAgreement" onchange="toggleAgreement()">
+      <label for="initialAgreement" id="initialAgreementLabel">개인 정보 동의</label>
+    </center>
+  </form>
+
+  <div class="agreement-container" id="agreementContainer">
+      <div class="agreement-content">
+          <b>1. 개인정보 수집 및 이용 동의</b><br>
+          반려동물(이름, 생년월일),견주님(연락처, 이메일)<br>
+          개인정보 이용 목적 : 강가딘택시 예약및 이용<br>
+          개인정보 보유 및 이용 기간 : 탈퇴시까지<br>
+          <b>2. 제3자 제공 동의 </b><br>
+          강가딘택시 기사님과 견주님 상호 제공<br>
+          제공하는 개인정보 항목<br>
+          <b>3. 위치정보 수집 및 이용 동의</b><br>
+          위치정보 수집 방법 : GPS기반 현위치등<br>
+          위치정보 이용 목적 : 출발지 목적지 위치 표시<br>
+          <b>4. 이벤트, 프로모션 정보 수신 동의</b><br>
+          이메일, SMS, 전화등 프로모션 정보 수신<br>
+          <b>5. 반려동물 상해보상에 대한 규정</b><br>
+          영수증 첨부한 반려동물 진료비(10만원이내),<br>
+          치료비(10만원이내), 입원비(10만원이내) <br> 
+          최대 30만원까지 보상해 드립니다. <br>
+          <b>6. 예약콜 취소 및 환불 규정</b><br>
+          <b>[현금예약]</b><br> 
+          예약비는 취소 수수료로 사용됩니다.<br>
+          <b>[카드결제]</b><br>
+          출발전일 운행요금의 20%<br>
+          출발시간 2시간 미만 : 운행요금의 100% <br> 
+          출발 10분후, 연락두절시 : 운행요금의 100% <br> 
+          <b>7. 차내 오염 세탁비 규정</b><br>
+          좌석오염 및 창문 오염 1만원<br>
+          두좌석이상 오염시 최대 2만원 기사님에게 드립니다.
+        </div>
+        <div class="agreement-checkbox">
+            <input type="checkbox" id="finalAgreement" onchange="setAgreementStatus()">
+            <label for="finalAgreement">전체 동의 사항 꼼꼼히 확인하였습니다.</label>
+        </div>
+    </div>
+
+
+
+
+  
+  <script>
+	document.addEventListener('contextmenu', function(e) {
+    		e.preventDefault();
+	});
+    </script>
+
+    <script>
+        // Ensure the windowElement exists before setting styles
+    document.addEventListener('DOMContentLoaded', function() {
+
+    const windowElement = document.getElementById('window');
+
+    // Window size and position logic
+    function setWindowSize() {
+      if (windowElement) { // Check if windowElement exists
+        const windowWidth = window.innerWidth;
+        windowElement.style.width = windowWidth >= 768 ? '60%' : '80%';
+        windowElement.style.maxWidth = '80%';
+      }
+    }
+
+    setWindowSize();
+    window.addEventListener('resize', setWindowSize);
+    });
+    </script>
+
+<script>
+  // 자동 입력 기능
+  document.getElementById('phoneNumber1').addEventListener('input', function() {
+    autoInputPhone(this);
+  });
+
+  document.getElementById('phoneNumber2').addEventListener('input', function() {
+    autoInputPhone(this);
+  });
+
+  function autoInputPhone(inputField) {
+    const phoneNumber = inputField.value;
+
+    if (phoneNumber.length === 3) {
+      inputField.value += '-';
+    } else if (phoneNumber.length === 8) {
+      inputField.value += '-';
+    }
+  }
+
+
+  function socialLogin(provider) {
+            const finalCheckbox = document.getElementById('finalAgreement');
+            if (!finalCheckbox.checked) {
+                alert("개인 정보 동의사항에 동의해주세요");
+                return;
+            }
+
+            // 여기에 각 소셜 로그인 프로바이더의 로그인 로직을 구현합니다.
+            // 이는 각 플랫폼의 API를 사용해야 하므로 여기서는 예시로만 제공합니다.
+            let email = prompt("이메일 주소를 입력해주세요 (소셜 로그인 시뮬레이션):");
+            if (email) {
+                saveUserInfo(email);
+                alert(`${provider} 로그인 성공!`);
+                // 여기에 다음 화면으로 넘어가는 로직을 구현합니다.
+            }
+        }
+
+        function saveUserInfo(email) {
+            const dogName = document.getElementById('dogName').value;
+            const phoneNumber = document.getElementById('phoneNumber1').value;
+
+            // localStorage를 사용하여 사용자 정보 저장
+            localStorage.setItem('userDogName', dogName);
+            localStorage.setItem('userPhoneNumber', phoneNumber);
+            localStorage.setItem('userEmail', email);
+        }
+
+        function getUserInfo() {
+            return {
+                dogName: localStorage.getItem('userDogName'),
+                phoneNumber: localStorage.getItem('userPhoneNumber'),
+                email: localStorage.getItem('userEmail')
+            };
+        }
+
+
+
+
+
+
+
+
+
+  // 로그인 기능
+function login() {
+  const dogName = document.getElementById('dogName').value.trim();
+  const phoneNumber1 = document.getElementById('phoneNumber1').value.trim();
+  const phoneNumber2 = document.getElementById('phoneNumber2').value.trim();
+
+  // dogName 유효성 검사
+  if (!dogName) {
+    alert('반려동물 이름을 입력하세요.');
+    return;
+  }
+
+
+  // 전화번호 비교
+  const isMatch = phoneNumber1 === phoneNumber2;
+  const message = isMatch ? '환영합니다. 간편로그인으로 로그인하세요' : '전화번호가 일치하지 않습니다.';
+
+  alert(message);
+
+  // 로그인 성공 시 저장 및 정보 표시
+  if (isMatch) {
+    saveUserInfo('');  // 이메일은 빈 문자열로 저장 (소셜 로그인이 아니므로)
+  //  saveLoginInfo(dogName, phoneNumber1);
+    showSavedInfo();
+  }
+}
+
+
+// 로그인 정보 저장 함수
+//function saveLoginInfo(dogName, phoneNumber) {
+//  localStorage.setItem('dogName', dogName);
+//  localStorage.setItem('phoneNumber', phoneNumber);
+//}
+
+// 저장된 정보 표시 함수
+function showSavedInfo() {
+//  const dogName = localStorage.getItem('dogName');
+//  const phoneNumber = localStorage.getItem('phoneNumber');
+
+//  alert(`저장된 정보:\n강아지 이름: ${dogName}\n전화번호: ${phoneNumber}`);
+
+const userInfo = getUserInfo();
+            alert(`저장된 정보:\n강아지 이름: ${userInfo.dogName}\n전화번호: ${userInfo.phoneNumber}\n이메일: ${userInfo.email}`);
+            
+}
+</script>
+
+<script>
+  function toggleAgreement() {
+      const container = document.getElementById('agreementContainer');
+      const checkbox = document.getElementById('initialAgreement');
+      if (checkbox.checked) {
+          container.classList.add('active');
+      } else {
+          container.classList.remove('active');
+      }
+  }
+
+  function setAgreementStatus() {
+      const finalCheckbox = document.getElementById('finalAgreement');
+      const initialCheckbox = document.getElementById('initialAgreement');
+      const initialLabel = document.getElementById('initialAgreementLabel');
+      const container = document.getElementById('agreementContainer');
+      
+      if (finalCheckbox.checked) {
+          initialCheckbox.checked = true;
+          initialLabel.textContent = "전체 개인정보 동의사항을 확인하였습니다";
+          container.classList.remove('active');
+      } else {
+          initialCheckbox.checked = false;
+          initialLabel.textContent = "개인 정보 동의를 권고합니다";
+      }
+  }
+</script>
+
+
+</body>
+</html>

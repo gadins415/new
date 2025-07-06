@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>간편 예약 신청</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .container { max-width: 400px; margin: auto; }
+        label { display: block; margin-top: 10px; }
+        input, select, button { width: 100%; padding: 8px; margin-top: 5px; }
+        .button-group { display: flex; gap: 10px; margin-top: 20px; }
+        .button-group button { flex: 1; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>간편 예약 신청</h2>
+        <label>동물이름</label>
+        <input type="text" placeholder="예: 춘식이">
+
+        <label>예약일시</label>
+        <input type="date">
+        <input type="time">
+
+        <label>출발주소</label>
+        <input type="text" placeholder="도로명주소 또는 건물명">
+
+        <label>경유</label>
+        <input type="checkbox">
+
+        <label>도착주소</label>
+        <input type="text" placeholder="안전한 장소를 지정하세요">
+
+        <label>왕복할인</label>
+        <input type="checkbox"> 편도
+        <input type="checkbox"> 왕복
+
+        <label>대기시간</label>
+        <input type="text" placeholder="예: 30분">
+
+        <label>견종정보</label>
+        <input type="text" placeholder="견(묘)종 입력">
+
+        <label>단독이동</label>
+        <input type="checkbox"> 강아지(고양이)만 보냅니다.
+
+        <label>승차정보</label>
+        사람 <input type="number" min="0" value="1"> 
+        동물 <input type="number" min="1" value="1">
+
+        <label>화물정보</label>
+        켄넬 <input type="number" min="0" value="0">
+        캐리어 <input type="number" min="0" value="0">
+
+        <label>기타 메모</label>
+        <textarea placeholder="추가 요청사항 입력"></textarea>
+
+        <label>전화번호</label>
+        <input type="tel" placeholder="010-1234-5678">
+
+        <div class="button-group">
+            <button>카드 예약 신청</button>
+            <button>현금 예약 신청</button>
+        </div>
+    </div>
+</body>
+</html>

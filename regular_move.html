@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>정기 진료 이동 신청</title>
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #fdf8f3;
+      padding: 2em;
+      color: #333;
+    }
+    h1, h2 { color: #5a3921; }
+    .intro {
+      max-width: 700px;
+      margin: auto;
+      margin-bottom: 2em;
+      background: #fff4e8;
+      padding: 1.5em;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    form {
+      background-color: #fff;
+      padding: 1.5em;
+      border-radius: 12px;
+      max-width: 480px;
+      margin: auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    label { display: block; margin-top: 1em; }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.8em;
+      margin-top: 0.3em;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    input, textarea, select {
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #ffbb55;
+    }
+    button {
+      background-color: #5a3921;
+      color: white;
+      padding: 1em;
+      border: none;
+      margin-top: 2em;
+      border-radius: 8px;
+      width: 100%;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    .required { color: red; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <h1 style="text-align:center;">강펫택시 정기 진료 이동 프로그램</h1>
+
+  <div class="intro">
+    <h2>🩺 프로그램 안내</h2>
+    <p>10살 이상 노견·노묘를 포함한 모든 반려동물 대상으로 정기 진료 이동을 도와드립니다.</p>
+    <ul>
+      <li>✔ 왕복 요금 사전 협의</li>
+      <li>✔ 5·10·15·20회 이동 시마다 <strong>무료 혜택</strong></li>
+      <li>✔ 병원 대기 시간 <strong>전액 무료</strong></li>
+      <li>✔ 응급 호출 시 <strong>추가 요금 없음</strong></li>
+      <li>✔ 강아지·고양이 모두 신청 가능</li>
+    </ul>
+  </div>
+
+  <form action="mailto:gadins415@gmail.com" method="post" enctype="text/plain" autocomplete="off">
+    <label>보호자 성함 <span class="required">*</span>
+      <input type="text" name="보호자이름" required>
+    </label>
+
+    <label>연락처 <span class="required">*</span>
+      <input type="tel" name="연락처" placeholder="010-0000-0000" required>
+    </label>
+
+    <label>이메일
+      <input type="email" name="이메일">
+    </label>
+
+    <label>거주 지역 (동/구 단위) <span class="required">*</span>
+      <input type="text" name="거주지역" required>
+    </label>
+
+    <label>반려동물 종류 <span class="required">*</span>
+      <select name="반려동물종류" required>
+        <option value="dog">강아지</option>
+        <option value="cat">고양이</option>
+        <option value="etc">기타</option>
+      </select>
+    </label>
+
+    <label>반려동물 이름 / 나이 <span class="required">*</span>
+      <input type="text" name="반려동물이름_나이" placeholder="예: 콩이 / 11살" required>
+    </label>
+
+    <label>진료 병원 명 / 주소
+      <input type="text" name="병원이름_주소">
+    </label>
+
+    <label>추가 요청 사항
+      <textarea name="요청사항" rows="4" placeholder="특이사항이 있다면 적어주세요."></textarea>
+    </label>
+
+    <button type="submit">신청서 제출</button>
+  </form>
+
+</body>
+</html>

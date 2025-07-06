@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐶펫택시 요금 계산기🚕</title>
+    <style>
+        body {
+            font-family: -apple-system, system-ui, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 24px;
+        }
+        .input-section {
+            margin-bottom: 24px;
+        }
+        select, input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        .distance-row, .normal-taxi-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin: 8px 0;
+        }
+        .distance-row input, .normal-taxi-row input {
+            width: 120px;
+        }
+        .result-box {
+            background: #f8f9fa;
+            padding: 16px;
+            margin: 12px 0;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+        }
+        .result-box.competitor {
+            border-left-color: #2196F3;
+        }
+        .result-box.normal {
+            border-left-color: #FF9800;
+        }
+        .service-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-left: 8px;
+            color: white;
+        }
+        .available { background: #4CAF50; }
+        .unavailable { background: #f44336; }
+        .check { background: #FF9800; }
+        .price-row {
+            margin: 8px 0;
+            line-height: 1.5;
+        }
+        .best-price {
+            background: #e8f5e9;
+            padding: 8px;
+            border-radius: 4px;
+            margin-top: 16px;
+        }
+        .cta-button {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: #4CAF50;
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 24px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><strong>🐶펫택시 요금 계산기🚕</strong></h1>
+        
+        <div class="input-section">
+            <select id="region">
+                <option value="">펫택시 예약 지역을 선택하세요</option>
+                <option value="서울">서울특별시</option>
+		<option value="부산">부산광역시</option>
+                <option value="대구">대구광역시</option>
+                <option value="인천">인천광역시</option>
+                <option value="광주">광주광역시</option>
+                <option value="대전">대전광역시</option>
+                <option value="울산">울산광역시</option>
+                <option value="세종">세종특별자치시</option>
+                <option value="경기">경기도</option>
+                <option value="강원">강원도</option>
+                <option value="충북">충청북도</option>
+                <option value="충남">충청남도</option>
+                <option value="전북">전라북도</option>
+                <option value="전남">전라남도</option>
+                <option value="경북">경상북도</option>
+                <option value="경남">경상남도</option>
+                <option value="제주">제주특별자치도</option>
+            </select>
+
+            <div class="distance-row">
+                <label>예상거리 : </label>
+                <input type="number" id="distance" value="10" step="0.1"> km 
+            </div>
+
+            <div class="normal-taxi-row">
+                <input type="number" id="normalRate" placeholder="거리당 요금" value="1000">원/km
+                <input type="number" id="normalBase" placeholder="기본요금" value="8000">원
+            </div>
+        </div>
+
+        <div class="result-box">
+            <h3>강펫택시앱 <span id="kangga-service" class="service-badge"></span></h3>
+            <div id="kangga-price" class="price-row"></div>
+        </div>
+
+        <div class="result-box competitor">
+            <h3>대기업펫택시앱 <span id="competitor-service" class="service-badge"></span></h3>
+            <div id="competitor-price" class="price-row"></div>
+        </div>
+
+        <div class="result-box normal">
+            <h3>일반펫택시 <span class="service-badge check">서비스지역 확인</span></h3>
+            <div id="normal-price" class="price-row"></div>
+        </div>
+
+        <div id="best-price" class="best-price"></div>
+
+        <a href="#" class="cta-button" id="detailButton">자세한 요금 확인하기</a>
+    </div>
+
+    <script>
+        const kanggaRegions = ['서울', '인천', '경기', '부산', '경남', '대전', '세종',  '충남', '전남', '제주'];
+        const competitorRegions = ['서울', '인천', '경기'];
+
+        function calculate() {
+            const distance = parseFloat(document.getElementById('distance').value) || 0;
+            const region = document.getElementById('region').value;
+            const normalRate = parseFloat(document.getElementById('normalRate').value) || 1000;
+            const normalBase = parseFloat(document.getElementById('normalBase').value) || 8000;
+
+            const prices = [
+                {
+                    name: '강펫택시앱',
+                    base: distance * 700 + 8000,
+                    surge: [1.0, 2.0],
+                    weather: [1.0, 1.5]
+                },
+                {
+                    name: '대기업펫택시앱',
+                    base: distance * 970 + 8000,
+                    surge: [1.0, 2.0]
+                },
+                {
+                    name: '일반펫택시',
+                    base: distance * normalRate + normalBase
+                }
+            ];
+
+            // Update service status
+            document.getElementById('kangga-service').textContent = 
+                kanggaRegions.includes(region) ? '서비스 가능' : '서비스 불가';
+            document.getElementById('kangga-service').className = 
+                `service-badge ${kanggaRegions.includes(region) ? 'available' : 'unavailable'}`;
+
+            document.getElementById('competitor-service').textContent = 
+                competitorRegions.includes(region) ? '서비스 가능' : '서비스 불가';
+            document.getElementById('competitor-service').className = 
+                `service-badge ${competitorRegions.includes(region) ? 'available' : 'unavailable'}`;
+
+            // Update prices
+            document.getElementById('kangga-price').innerHTML = `
+		<strong>[700원/km + 8,000원]</strong> 2025년5월25일 기준<br>
+                1.기본요금: ${prices[0].base.toLocaleString()}원<br>
+                2.강펫+날씨 탄력요금: ${prices[0].base.toLocaleString()}원 ~ ${(prices[0].base * 2).toLocaleString()}원<br>
+                3.강펫 탄력요금: ${prices[0].base.toLocaleString()}원 ~ ${(prices[0].base * 1.5).toLocaleString()}원
+            `;
+
+            document.getElementById('competitor-price').innerHTML = `
+		[970원/km + 8,000원] 업데이트확인필요<br>
+                1.기본요금: ${prices[1].base.toLocaleString()}원<br>
+                2.자체 탄력요금: ${prices[1].base.toLocaleString()}원 ~ ${(prices[1].base * 2).toLocaleString()}원
+            `;
+
+            document.getElementById('normal-price').innerHTML = `
+                [거리요금/기본요금 개별입력]<br>
+		1.예상요금: ${prices[2].base.toLocaleString()}원
+            `;
+
+            // Show best price
+            const sortedPrices = [...prices].sort((a, b) => a.base - b.base);
+            document.getElementById('best-price').innerHTML = `
+                최저가: ${sortedPrices[0].name} (${sortedPrices[0].base.toLocaleString()}원)
+            `;
+
+            // Report if not lowest price
+            //if (sortedPrices[0].name !== '강펫택시앱') {
+            //    const mailtoLink = `mailto:kanggadintaxi@gmail.com?subject=가격 경쟁력 알림&body=지역: ${region}%0D%0A거리: ${distance}km%0D%0A최저가: ${sortedPrices[0].name} (${sortedPrices[0].base.toLocaleString()}원)%0D%0A강펫택시: ${prices[0].base.toLocaleString()}원`;
+            //    window.open(mailtoLink);
+            //}
+        }
+
+        // Event listeners
+        ['region', 'distance', 'normalRate', 'normalBase'].forEach(id => {
+            document.getElementById(id).addEventListener('input', calculate);
+        });
+
+        document.getElementById('detailButton').addEventListener('click', function(e) {
+            e.preventDefault();
+            const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            
+            if (!isMobile) {
+                alert('모바일 기기에서 계산해주세요.\n스마트폰으로 접속하시면 앱 설치가 가능합니다.');
+                return;
+            }
+
+            if (/Android/i.test(navigator.userAgent)) {
+                window.location.href = 'market://details?id=com.kanggadintaxi.users';
+            } else if (userAgent.includes('iphone') || userAgent.includes('ipad') || userAgent.includes('ipod')) {
+                window.location.href = 'https://apps.apple.com/us/app/%EA%B0%95%ED%8E%AB-t-%EA%B0%95%ED%8E%AB%ED%83%9D%EC%8B%9C/id6736770302';
+            }
+        });
+
+        // Initial calculation
+        calculate();
+    </script>
+
+<script>
+// 우클릭 방지
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    alert('우클릭이 제한되어 있습니다.');
+});
+
+// F12 키 방지
+document.addEventListener('keydown', function(e) {
+    if (e.keyCode === 123) { // F12 키
+        e.preventDefault();
+        alert('개발자 도구 사용이 제한되어 있습니다.');
+    }
+});
+
+// Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C 방지
+document.addEventListener('keydown', function(e) {
+    if (
+        (e.ctrlKey && e.shiftKey && e.keyCode === 73) || // Ctrl+Shift+I
+        (e.ctrlKey && e.shiftKey && e.keyCode === 74) || // Ctrl+Shift+J
+        (e.ctrlKey && e.shiftKey && e.keyCode === 67)    // Ctrl+Shift+C
+    ) {
+        e.preventDefault();
+        alert('개발자 도구 사용이 제한되어 있습니다.');
+    }
+});
+
+// 텍스트 선택 방지
+document.addEventListener('selectstart', function(e) {
+    e.preventDefault();
+});
+
+// 드래그 방지
+document.addEventListener('dragstart', function(e) {
+    e.preventDefault();
+});
+</script>
+
+</body>
+</html>

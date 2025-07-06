@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebViewer Test</title>
+    <script>
+        window.onload = function () {
+            const message = "Test Message for Thunkable WebViewer";
+            const currentUrl = window.location.href;
+            const newUrl = `${currentUrl}?message=${encodeURIComponent(message)}`;
+            console.log("Redirecting to:", newUrl);
+            window.location.href = newUrl;
+        };
+    </script>
+</head>
+<body>
+    <h1>Testing WebViewer Message</h1>
+</body>
+</html>
+
+

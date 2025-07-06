@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>강가딘택시 페프(기사) 신청서 - Test Version</title>
+
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f9f9f9;
+          color: #333;
+      }
+
+      form {
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0,0,0,0.1);
+          max-width: 500px;
+          margin: auto;
+      }
+
+      input[type="text"], input[type="tel"], select {
+          width: calc(100% - 22px);
+          padding: 10px;
+          margin: 10px 0;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+      }
+
+      input[type="checkbox"] {
+          margin-right: 10px;
+      }
+
+      button {
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 4px;
+          cursor: pointer;
+          margin: 5px 0;
+      }
+
+      button:hover {
+          background-color: #0056b3;
+      }
+
+      .checkbox-container {
+          display: flex;
+          align-items: center;
+      }
+
+      .checkbox-container label {
+          margin-left: 5px;
+      }
+
+      .textbox-container {
+          position: relative;
+      }
+
+      .textbox-container select, .textbox-container input[type="text"] {
+          width: 100%;
+      }
+
+      .test-banner {
+          background-color: #ffcc00;
+          color: #333;
+          text-align: center;
+          padding: 10px;
+          font-size: 1.2em;
+          margin-bottom: 20px;
+      }
+
+      .admin-buttons {
+          display: none;
+      }
+
+  </style>
+</head>
+
+<body>
+  <div class="test-banner">Test Version</div>
+
+  <form>
+    <label for="전화번호">전화번호:</label>
+    <input type="tel" id="전화번호" name="전화번호" placeholder="전화번호를 입력하세요">
+
+    <label for="이름">이름:</label>
+    <input type="text" id="이름" name="이름" placeholder="이름을 입력하세요">
+
+    <div class="checkbox-container">
+      <input type="checkbox" id="성별_남" name="성별" value="남">
+      <label for="성별_남">남</label>
+      <input type="checkbox" id="성별_여" name="성별" value="여">
+      <label for="성별_여">여</label>
+    </div>
+
+    <label for="차량모델">차량모델:</label>
+    <input type="text" id="차량모델" name="차량모델" placeholder="차량모델을 입력하세요">
+
+    <div class="checkbox-container">
+      <input type="checkbox" id="EV" name="EV">
+      <label for="EV">EV</label>
+    </div>
+
+    <label for="차량번호">차량번호:</label>
+    <input type="text" id="차량번호" name="차량번호" placeholder="차량번호를 입력하세요">
+
+    <label for="차고지주소">차고지 주소:</label>
+    <div class="textbox-container">
+      <input type="text" id="차고지주소" name="차고지주소" placeholder="차고지 주소를 입력하세요">
+      <button type="button" class="garage-button">운행 지역</button>
+    </div>
+
+    <label for="면허번호">동물운송 면허번호:</label>
+    <input type="text" id="면허번호" name="동물운송면허번호" placeholder="동물운송 면허번호를 입력하세요">
+
+    <div class="checkbox-container">
+      <input type="checkbox" id="동의" name="전체동의사항">
+      <label for="동의">전체 동의사항</label>
+    </div>
+
+    <button type="button" class="submit-button">신청제출</button>
+    <button type="button" class="submit-button">면허제출</button>
+    <button type="button" class="submit-button">기타제출</button>
+    <button type="button" class="submit-button">출근여부</button>
+  </form>
+
+  <div class="admin-buttons">
+    <input type="tel" id="admin-전화번호" placeholder="전화번호 입력">
+    <button type="button" data-flag="approve">면허확인</button>
+    <button type="button" data-flag="reject">기타확인</button>
+    <button type="button" data-flag="pending">출근확인</button>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+  <script>
+    // Your Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyBlazD0JCDcplvuLrPhla1V34d7hsIrbXg",
+      authDomain: "kanggadin-taxi.firebaseapp.com",
+      databaseURL: "https://kanggadin-taxi-default-rtdb.firebaseio.com",
+      projectId: "kanggadin-taxi",
+      storageBucket: "kanggadin-taxi.appspot.com",
+      messagingSenderId: "404036043806",
+      appId: "1:404036043806:web:98ae408d342d16abd39a0f",
+      measurementId: "G-20QC9FFV1K"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Text-to-Speech 환영 메시지
+      const msg = new SpeechSynthesisUtterance("기사 신청을 환영합니다.");
+      window.speechSynthesis.speak(msg);
+
+      // 전화번호 포맷팅
+      const telInput = document.querySelector('input[name="전화번호"]');
+      telInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/-/g, '');
+        if (value.length > 3 && value.length <= 8) {
+          value = value.slice(0, 3) + '-' + value.slice(3);
+        } else if (value.length > 8) {
+          value = value.slice(0, 3) + '-' + value.slice(3, 7) + '-' + value.slice(7);
+        }
+        e.target.value = value;
+      });
+
+      // 차고 정보 ListPicker
+      const garageButton = document.querySelector('.garage-button');
+      const garageContainer = document.querySelector('.textbox-container');
+
+      garageButton.addEventListener('click', function() {
+        const listPicker = document.createElement('select');
+        const options = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주'];
+        options.forEach(option => {
+          const opt = document.createElement('option');
+          opt.value = option;
+          opt.textContent = option;
+          listPicker.appendChild(opt);
+        });
+
+        listPicker.addEventListener('change', function() {
+          const textBox = document.createElement('input');
+          textBox.type = 'text';
+          textBox.value = listPicker.value;
+          textBox.addEventListener('focus', function() {
+            garageContainer.innerHTML = '';
+            garageContainer.appendChild(listPicker);
+          });
+
+          garageContainer.innerHTML = '';
+          garageContainer.appendChild(textBox);
+        });
+
+        garageContainer.innerHTML = '';
+        garageContainer.appendChild(listPicker);
+      });
+
+      // 신청 버튼 기능
+      document.querySelector('.submit-button').addEventListener('click', function() {
+        const requiredFields = ['전화번호', '차량모델', '차고지주소', '동물운송면허번호'];
+        let isValid = true;
+
+        requiredFields.forEach(field => {
+          if (!document.querySelector(`input[name="${field}"]`).value) {
+            isValid = false;
+          }
+        });
+
+        if (isValid && document.querySelector('input[name="전체동의사항"]').checked) {
+          alert('신청서 제출이 완료되었습니다. - Test Version');
+          // Firebase 데이터 저장 로직 추가
+          firebase.database().ref('GisaData/' + telInput.value).set({
+            전화번호: telInput.value,
+            차량모델: document.querySelector('input[name="차량모델"]').value,
+            차고지주소: document.querySelector('input[name="차고지주소"]').value,
+            동물운송면허번호: document.querySelector('input[name="동물운송면허번호"]').value,
+            EV: document.querySelector('input[name="EV"]').checked
+          });
+
+          // 문자 메세지 보내기 로직 추가
+        } else {
+          alert('모든 필드를 채우고 전체 동의사항에 동의해주세요.');
+        }
+      });
+
+      // 관리자 모드 진입
+      const adminInput = document.querySelector('#전화번호');
+      adminInput.addEventListener('input', function() {
+        if (adminInput.value === '7777') {
+          document.querySelector('.admin-buttons').style.display = 'block';
+        } else {
+          document.querySelector('.admin-buttons').style.display = 'none';
+        }
+      });
+
+      // 관리자 버튼 기능
+      document.querySelectorAll('.admin-buttons button').forEach(button => {
+        button.addEventListener('click', function() {
+          const flag = button.getAttribute('data-flag');
+          // Update SignUpFlag in Firebase
+          firebase.database().ref('GisaData/' + adminInput.value).update({
+            SignUpFlag: flag
+          });
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

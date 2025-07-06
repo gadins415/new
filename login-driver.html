@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/icons/icon-driver-192.png">
+    <link rel="apple-touch-icon" href="/icons/icon-driver-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>강가딘택시 펫프용앱</title>
+    <style>
+        body, html {
+            font-family: Arial, sans-serif;
+            height: 100%;
+	    width: 100%;
+	    margin: 0;
+            padding: 0;
+            background-color: #ffffff; /* white */
+            display: flex;
+            justify-content: top;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        h1 {
+            color: #000080; /* dark navy */
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input {
+            font-size: 16px;
+            margin: 10px 0;
+            padding: 10px;
+	          height: 20px;
+            width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+	.container {
+	      text-align: center
+    	}
+    	.container button {
+	      margin: 5px;
+	      padding: 10px 20px;
+	      background-color: #000000;
+	      color: white;
+	      border: none;
+	      border-radius: 5px;
+	      cursor: pointer;
+    	}
+      footer {
+        position: fixed;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      footer button {
+        margin: 5px;
+        padding: 5px 10px;
+        font-size: 12px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+        button {
+            font-size: 16px;
+            margin: 10px 0;
+            padding: 10px 20px;
+            height: 40px;
+            width: 270px;
+            background-color: #000080; /* dark navy */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .social-login {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .social-login img {
+            margin: 0 1%;
+            width: 65px;
+            height: 65px;
+        }
+        .notice {
+            background-color: #ffffe0; /* pastel yellow */
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+/* PC 스타일 (최소 너비 768px 이상) */
+@media (min-width: 768px) {
+  body {
+    width: 768px;
+    margin: 0 auto; /* 가운데 정렬 */
+  }
+}
+
+/* 모바일 스타일 (최대 너비 767px 이하) */
+@media (max-width: 767px) {
+  body {
+    width: calc(100vw - 20px); /* 브라우저 너비 - 여백 */
+    margin: 0; /* 여백 제거 */
+    /* width: 100%;  기기 너비 100% */
+    height: 100vh; /* 화면 높이 100% */
+    overflow: hidden; /* 스크롤 감추기 */
+  }
+}
+
+
+
+    </style>
+  <style>
+    /* 모달 스타일 */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+
+</head>
+<body>
+    <h1>펫프님 오늘도 안전운전하세요</h1>
+    <img src="img/taxi_image.png" alt="Kanggadin Taxi" width="200">
+    <form>
+        <input type="tel" placeholder="010-1234-5678" required>
+        <input type="tel" placeholder="OTP 입력" required>
+        <button type="submit">로  그  인</button>
+    </form>
+    <div class="social-login">
+        <img src="img/google_icon.png" alt="Google">
+        <img src="img/kakao_icon.png" alt="Kakao">
+        <img src="img/naver_icon.png" alt="Naver">
+        <img src="img/kanggadin_icon.png" alt="Kanggadin">
+    </div>
+
+
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>여기에 한글 텍스트를 넣습니다.</p>
+  </div>
+</div>
+
+<script>
+  // 모달 기능 스크립트
+  var modal = document.getElementById("myModal");
+  var span = document.getElementsByClassName("close")[0];
+
+  // 모달을 엽니다
+  function openModal() {
+    modal.style.display = "block";
+  }
+
+  // 모달을 닫습니다
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  // 사용자가 모달 외부를 클릭하면 모달을 닫습니다
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+</script>
+<!--
+<button onclick="openModal()">모달 열기</button>
+-->
+  <script>
+	document.addEventListener('contextmenu', function(e) {
+    		e.preventDefault();
+	});
+    </script>
+
+    <script>
+        // Ensure the windowElement exists before setting styles
+    document.addEventListener('DOMContentLoaded', function() {
+
+    const windowElement = document.getElementById('window');
+
+    // Window size and position logic
+    function setWindowSize() {
+      if (windowElement) { // Check if windowElement exists
+        const windowWidth = window.innerWidth;
+        windowElement.style.width = windowWidth >= 768 ? '60%' : '80%';
+        windowElement.style.maxWidth = '80%';
+      }
+    }
+
+    setWindowSize();
+    window.addEventListener('resize', setWindowSize);
+    });
+    </script>
+
+
+</body>
+</html>

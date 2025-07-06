@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Firebase Phone Auth + FB UI</title>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <!-- Firebase UI -->
+  <script src="https://cdn.firebase.com/libs/firebaseui/4.8.0/firebaseui.js"></script>
+  <link rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/4.8.0/firebaseui.css" />
+</head>
+<body>
+  <div id="recaptcha-container"></div>
+  <input type="text" id="phone-number" placeholder="Enter phone number">
+  <button id="sign-in-button">Sign In</button>
+  <input type="text" id="verification-code" placeholder="Enter verification code">
+  <button id="verify-button">Verify Code</button>
+
+  <div id="firebaseui-auth-container"></div>
+  <div id="loader">Loading...</div>
+  
+  <script>
+     // Firebase 초기화
+    var firebaseConfig = {
+        apiKey: "AIzaSyBlazD0JCDcplvuLrPhla1V34d7hsIrbXg",
+        authDomain: "kanggadin-taxi.firebaseapp.com",
+        databaseURL: "https://kanggadin-taxi-default-rtdb.firebaseio.com",
+        projectId: "kanggadin-taxi",
+        storageBucket: "kanggadin-taxi.appspot.com",
+        messagingSenderId: "404036043806",
+        appId: "1:404036043806:web:016ffb1108c22589d39a0f",
+        measurementId: "G-QB6MR5KVXS"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    // Firebase UI 설정
+    var uiConfig = {
+      signInSuccessUrl: 'YOUR_REDIRECT_URL',
+      signInOptions: [
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        firebase.auth.EmailAuthProvider.PROVIDER_ID
+      ],
+      tosUrl: 'YOUR_TOS_URL'
+    };
+
+    var ui = new firebaseui.auth.AuthUI(firebase.auth());
+    ui.start('#firebaseui-auth-container', uiConfig);
+
+    // Recaptcha 설정
+    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+    
+    document.getElementById('sign-in-button').addEventListener('click', function() {
+      var phoneNumber = document.getElementById('phone-number').value;
+      var appVerifier = window.recaptchaVerifier;
+
+      firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
+        .then(function (confirmationResult) {
+          // SMS 전송 성공
+          window.confirmationResult = confirmationResult;
+        }).catch(function (error) {
+          // SMS 전송 실패
+          console.error("Error during signInWithPhoneNumber", error);
+        });
+    });
+
+    document.getElementById('verify-button').addEventListener('click', function() {
+      var code = document.getElementById('verification-code').value;
+      confirmationResult.confirm(code).then(function (result) {
+        // 사용자 인증 성공
+        var user = result.user;
+        console.log("User authenticated successfully:", user);
+      }).catch(function (error) {
+        // 인증 실패
+        console.error("Error during code verification", error);
+      });
+    });
+  </script>
+</body>
+</html>
