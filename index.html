@@ -235,6 +235,26 @@
   height: 50px;
 }
 
+.instagram-button {
+  position: fixed;
+  bottom: 160px; /* 카카오 버튼보다 위쪽 */
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle at 30% 30%, #feda75, #d62976, #962fbf, #4f5bd5);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+}
+.instagram-button img {
+  width: 30px;
+  height: 30px;
+}
+
+
 </style>
 
 </head>
@@ -252,6 +272,13 @@
     <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" alt="카카오톡 문의">
   </a>
 </div>
+
+<div class="instagram-button">
+  <a href="https://instagram.com/kang.gadin.taxi" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="인스타그램 보기">
+  </a>
+</div>
+
 
 <div class="floating-banners">
   <div class="banner-item first-use" onclick="redirectUser()">
@@ -369,7 +396,7 @@
                         <img src="https://r.mobirisesite.com/966251/assets/images/background1-h_m4aond4t.jpg" alt="">
                     </a>
                 </span>
-                <span class="navbar-caption-wrap"><a class="navbar-caption text-primary display-2" href="#">강펫택시2</a></span>
+                <span class="navbar-caption-wrap"><a class="navbar-caption text-primary display-2" href="#">강펫택시</a></span>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbarSupportedContent" data-bs-target="#navbarSupportedContent" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <div class="hamburger">
                         <span></span>
