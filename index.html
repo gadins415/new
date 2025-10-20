@@ -349,39 +349,7 @@
     }
   }
 
-</script>
 
-<!-- 🔲 팝업 오버레이 -->
-<div id="videoPopup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255, 248, 240, 0.95); z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:10px;">
-  
-  <!-- 🔴 YouTube 영상 -->
-<!--
-  <div style="width:100%; max-width:400px; aspect-ratio:9/16; margin-bottom:10px; background:#000;">
-    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/IsPPvKbD-S4" frameborder="0" allowfullscreen></iframe>
-  </div>
-
-  <div style="width:100%; max-width:400px; aspect-ratio:9/16; margin-bottom:10px; background:#000;">
-    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/IsPPvKbD-S4" frameborder="0" allowfullscreen></iframe>
-  </div>
--->
-  <!-- 🟣 Instagram 영상 
-  <div style="width:100%; max-width:400px; aspect-ratio:9/16; background:#000;">
-    <iframe src="https://www.instagram.com/p/YOUR_POST_ID/embed" width="100%" height="100%" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
-  </div> -->
-
-  <!-- ❌ 닫기 버튼 -->
-  <button onclick="document.getElementById('videoPopup').style.display='none'" style="margin-top:10px; background-color: #ff5c5c;
-    color: white; padding:8px 16px; font-size:16px;"> x 닫기 </button>
-</div>
-
-<script>
-  // 페이지 로드시 2초 후 팝업 표시 (원하면 배너 클릭으로도 바꿀 수 있음)
-  window.onload = function() {
-    setTimeout(function() {
-      document.getElementById('videoPopup').style.display = 'flex';
-    }, 2000);
-  };
-</script>
 
  
   
