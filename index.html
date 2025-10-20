@@ -385,11 +385,12 @@
     </nav>
 </section>
 
-<!-- 강가딘택시 상단 메인예약 배너 -->
+<!-- 강가딘택시 앱예약 버튼 (기기감지 기능 포함) -->
 <section style="background:#fffaf5; padding:30px 10px; text-align:center; font-family:'Pretendard',sans-serif;">
-  <h2 style="font-size:1.4rem; font-weight:700; margin-bottom:20px;">🐶 강펫택시 빠른 예약 🐶</h2>
+  <h2 style="font-size:1.4rem; font-weight:700; margin-bottom:20px;">🐶 강가딘택시 빠른 예약</h2>
 
   <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+    
     <!-- 1. 할인 앱 예약 (자동 스토어 이동) -->
     <a id="appLink"
        style="flex:1; min-width:100px; max-width:200px; background:#4caf50; color:white; 
@@ -398,7 +399,7 @@
       할인 앱 예약<br><small>앱에서 예약하고 즉시 할인</small>
     </a>
 
-    <!-- 2. 장거리 예약 (앱 링크 or 예약 폼) -->
+    <!-- 2. 장거리 예약 -->
     <a href="https://play.google.com/store/apps/details?id=com.kanggadintaxi.users"
        style="flex:1; min-width:100px; max-width:200px; background:#2196f3; color:white; 
               padding:14px 12px; border-radius:12px; text-decoration:none; font-weight:600;
@@ -406,7 +407,7 @@
       장거리 예약<br><small>왕복·공항 이동 간편 신청</small>
     </a>
 
-    <!-- 3. 응급 예약 (전화 연결) -->
+    <!-- 3. 응급 예약 -->
     <a href="tel:0507-1309-9708"
        style="flex:1; min-width:100px; max-width:200px; background:#e53935; color:white; 
               padding:14px 12px; border-radius:12px; text-decoration:none; font-weight:600;
@@ -416,9 +417,29 @@
   </div>
 
   <p style="margin-top:20px; font-size:0.85rem; color:#777;">
-    * Android 전용 앱 다운로드 후 예약 시 추가 할인 및 포인트 적립 가능
+    * 기기에 맞는 앱스토어로 자동 이동합니다.
   </p>
 </section>
+
+<script>
+  document.getElementById('appLink').addEventListener('click', function(e) {
+    e.preventDefault();
+
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+    if (/android/i.test(userAgent)) {
+      window.location.href = "https://play.google.com/store/apps/details?id=com.kanggadintaxi.users";
+    } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+      window.location.href = "https://apps.apple.com/app/idYOUR_APPLE_ID";
+    } else {
+      // PC 접속 시 안내 페이지 or 구글플레이 기본 이동
+      alert("모바일 기기에서 앱을 다운로드해주세요!");
+      window.location.href = "https://play.google.com/store/apps/details?id=com.kanggadintaxi.users";
+    }
+  });
+</script>
+
+
 
 
 <section data-bs-version="5.1" class="features09 cid-uwbEWC5LOb" id="features09-z">
