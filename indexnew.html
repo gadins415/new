@@ -9,12 +9,13 @@
 body {
   margin:0;
   font-family:-apple-system;
-  background:#fffacd url('bg.png') no-repeat center top;
+  background: url('bg.png') no-repeat center top;
   background-size:cover;
 }
 
 /* 전체 */
 .container {
+  position:relative;
   height:100dvh; /* 🔥 핵심: 모바일 대응 */
   max-width:420px;
   margin:0 auto;
@@ -43,8 +44,11 @@ body {
 /* 아이폰 */
 /* 아이폰 외곽 */
 .phone {
-  margin:10px auto;
-  width:85%;
+  position:absolute;
+  top:180px;   /* 420 × 0.43 */
+  left:50%;
+  transform:translateX(-50%);
+  width:280px;
   max-width:320px;
 
   aspect-ratio: 9 / 19; /* 🔥 핵심: 아이폰 비율 */
@@ -148,9 +152,8 @@ body {
 /* 강아지 (왼쪽) */
 .dog {
   position:absolute;
-  left:-20px;
-  top:40%;
-  transform:translateY(-50%);
+  left:50px;   /* 120 × 0.43 */
+  top:280px;   /* 650 × 0.43 */
   width:80px;
   z-index:2;
 }
@@ -158,17 +161,19 @@ body {
 /* 춘식이 (오른쪽) */
 .chunsik {
   position:absolute;
-  right:-20px;
-  top:40%;
-  transform:translateY(-50%);
+  right:50px;
+  top:280px;
   width:90px;
   z-index:2;
 }
 
 /* 로고 */
 .logo {
-  width:120px;
-  margin-bottom:5px;
+  position:absolute;
+  top:52px;     /* 120 × 0.43 */
+  left:50%;
+  transform:translateX(-50%);
+  width:90px;
 }
 
 
