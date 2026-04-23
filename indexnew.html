@@ -8,15 +8,15 @@
 <style>
 body {
   margin:0;
-  font-family:-apple-system, BlinkMacSystemFont, sans-serif;
-  background:#f2f2f2;
+  font-family:-apple-system;
+  background:#fffacd;
 }
 
+/* 전체 */
 .container {
   height:100vh;
   max-width:420px;
   margin:0 auto;
-  background:#fff;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
@@ -25,7 +25,8 @@ body {
 /* 상단 */
 .header {
   text-align:center;
-  padding:20px 16px 10px;
+  padding:20px 10px 5px;
+  color:#000080;
 }
 
 .header h1 {
@@ -35,110 +36,84 @@ body {
 
 .header p {
   font-size:13px;
-  color:#666;
+  opacity:0.7;
 }
 
 /* 아이폰 */
 .phone {
-  margin:0 16px;
-  background:#000;
-  border-radius:36px;
-  padding:14px;
+  margin:10px;
+  background:#000080;
+  border-radius:40px;
+  padding:10px;
 }
 
 .screen {
-  background:#fff;
-  border-radius:26px;
+  background:#fffacd;
+  border-radius:30px;
   padding:16px;
-  text-align:left;
 }
 
+/* 내용 */
 .row {
   font-size:14px;
   margin-bottom:6px;
+  color:#000080;
 }
 
 .price {
-  font-size:20px;
-  font-weight:700;
-  margin:10px 0;
+  font-size:22px;
+  font-weight:800;
+  margin:12px 0;
+  color:#000080;
 }
 
 .cta {
   background:#ffc300;
   padding:14px;
+  border-radius:14px;
   text-align:center;
-  border-radius:12px;
   font-weight:700;
-  margin-top:8px;
-  text-decoration:none;
-  color:#000;
-  display:block;
 }
 
 /* 신뢰 */
 .trust {
   text-align:center;
   font-size:13px;
-  margin-top:10px;
+  color:#000080;
+  margin-top:6px;
 }
 
 /* 후기 */
-.review-wrap {
-  overflow:hidden;
-  white-space:nowrap;
-  background:#fafafa;
-  padding:8px 0;
-  margin-top:8px;
-}
-
-.review-track {
-  display:inline-block;
-  padding-left:100%;
-  animation:scroll 25s linear infinite;
+.review {
   font-size:12px;
-  color:#555;
-}
-
-.review-track span {
-  margin-right:30px;
-}
-
-@keyframes scroll {
-  0% { transform:translateX(0); }
-  100% { transform:translateX(-100%); }
-}
-
-/* 실시간 */
-.live {
   text-align:center;
-  font-size:12px;
-  color:#888;
-  margin-top:6px;
+  color:#000080;
+  margin-top:4px;
 }
 
 /* 하단 */
 .footer {
-  padding:10px 16px 16px;
+  padding:10px;
 }
 
+/* 버튼 */
 .buttons {
-  display:flex;
-  flex-wrap:wrap;
+  display:grid;
+  grid-template-columns:1fr 1fr;
   gap:6px;
 }
 
 .btn {
-  flex:1;
-  padding:10px;
-  border-radius:10px;
+  padding:12px;
+  border-radius:12px;
   text-align:center;
-  font-size:12px;
-  text-decoration:none;
+  font-size:13px;
+  font-weight:600;
 }
 
+/* 버튼 스타일 */
 .store {
-  background:#000;
+  background:#000080;
   color:#fff;
 }
 
@@ -165,72 +140,42 @@ body {
     <div class="phone">
       <div class="screen">
 
-        <div class="row">수원 장안구 → 성남 분당구</div>
+        <div class="row">수원 → 분당</div>
         <div class="row">오늘 14:00</div>
 
-        <div class="price" id="price">32,500원</div>
+        <div class="price">32,500원</div>
 
-        <a href="#" class="cta">
+        <div class="cta">
           요금 확인하고 예약하기 →
-        </a>
+        </div>
 
       </div>
     </div>
 
     <div class="trust">
-      ✔ 기사 직접 배차 · 단독 이동 보장
+      ✔ 기사 직접 배차 · 단독 이동
     </div>
 
-    <!-- 후기 -->
-    <div class="review-wrap">
-      <div class="review-track">
-        <span>🐶 두부 | 장안구 → 수지동 "기사님 너무 친절했어요"</span>
-        <span>🐱 나비 | 분당 → 잠실 "혼자 이동인데도 안심됐어요"</span>
-        <span>🐶 콩이 | 수원 → 강남 "시간 정확해서 좋아요"</span>
-        <span>🐶 토리 | 동탄 → 판교 "실시간 케어 최고"</span>
-        <span>🐱 모모 | 광교 → 성수 "스트레스 없이 이동했어요"</span>
-        <span>🐶 초코 | 용인 → 압구정 "단독 이동이라 믿음"</span>
-        <span>🐶 보리 | 화성 → 강남 "다음에도 이용할게요"</span>
-      </div>
-    </div>
-
-    <div class="live" id="live">
-      지금 3건 예약 진행중
+    <div class="review">
+      🐶 "혼자 이동인데도 안심됐어요"
     </div>
 
   </div>
 
-  <!-- 하단 -->
+  <!-- 하단 버튼 -->
   <div class="footer">
     <div class="buttons">
 
-      <a href="#" class="btn store">플레이스토어</a>
-      <a href="#" class="btn store">앱스토어</a>
+      <div class="btn store">플레이스토어</div>
+      <div class="btn store">앱스토어</div>
 
-      <a href="#" class="btn kakao">견주 상담</a>
-      <a href="#" class="btn kakao">기사 지원</a>
+      <div class="btn kakao">견주 상담</div>
+      <div class="btn kakao">기사 지원</div>
 
     </div>
   </div>
 
 </div>
-
-<script>
-/* 가격 랜덤 */
-setInterval(()=>{
-  let base = 32000;
-  let rand = Math.floor(Math.random()*4000);
-  document.getElementById("price").innerText =
-    (base + rand).toLocaleString() + "원";
-},3000);
-
-/* 실시간 예약 */
-setInterval(()=>{
-  let n = Math.floor(Math.random()*5)+1;
-  document.getElementById("live").innerText =
-    "지금 " + n + "건 예약 진행중";
-},4000);
-</script>
 
 </body>
 </html>
