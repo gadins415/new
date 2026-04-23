@@ -14,7 +14,7 @@ body {
 
 /* 전체 */
 .container {
-  height:100vh;
+  height:100dvh; /* 🔥 핵심: 모바일 대응 */
   max-width:420px;
   margin:0 auto;
   display:flex;
@@ -25,52 +25,53 @@ body {
 /* 상단 */
 .header {
   text-align:center;
-  padding:20px 10px 5px;
+  padding:16px 10px 4px;
   color:#000080;
 }
 
 .header h1 {
-  font-size:20px;
+  font-size:18px;
   margin:5px 0;
 }
 
 .header p {
-  font-size:13px;
+  font-size:12px;
   opacity:0.7;
 }
 
 /* 아이폰 */
 .phone {
-  margin:10px;
+  margin:8px;
   background:#000080;
-  border-radius:40px;
+  border-radius:36px;
   padding:10px;
 }
 
 .screen {
   background:#fffacd;
-  border-radius:30px;
-  padding:16px;
+  border-radius:26px;
+  padding:14px;
 }
 
-/* 내용 */
+/* 텍스트 */
 .row {
-  font-size:14px;
-  margin-bottom:6px;
+  font-size:13px;
+  margin-bottom:5px;
   color:#000080;
 }
 
 .price {
-  font-size:22px;
+  font-size:20px;
   font-weight:800;
-  margin:12px 0;
+  margin:10px 0;
   color:#000080;
 }
 
+/* CTA */
 .cta {
   background:#ffc300;
-  padding:14px;
-  border-radius:14px;
+  padding:12px;
+  border-radius:12px;
   text-align:center;
   font-weight:700;
 }
@@ -78,22 +79,22 @@ body {
 /* 신뢰 */
 .trust {
   text-align:center;
-  font-size:13px;
-  color:#000080;
-  margin-top:6px;
-}
-
-/* 후기 */
-.review {
   font-size:12px;
-  text-align:center;
   color:#000080;
   margin-top:4px;
 }
 
-/* 하단 */
+/* 후기 */
+.review {
+  font-size:11px;
+  text-align:center;
+  color:#000080;
+  margin-top:2px;
+}
+
+/* 하단 고정 */
 .footer {
-  padding:10px;
+  padding:8px;
 }
 
 /* 버튼 */
@@ -104,14 +105,14 @@ body {
 }
 
 .btn {
-  padding:12px;
-  border-radius:12px;
+  padding:10px;
+  border-radius:10px;
   text-align:center;
-  font-size:13px;
+  font-size:12px;
   font-weight:600;
 }
 
-/* 버튼 스타일 */
+/* 스타일 */
 .store {
   background:#000080;
   color:#fff;
@@ -129,53 +130,144 @@ body {
 
 <div class="container">
 
-  <!-- 상단 -->
+  <!-- ======================
+       1. 헤드 영역
+  ====================== -->
   <div>
+
     <div class="header">
       <h1>견주 없이도 안전한 펫 이동</h1>
       <p>단독 이동 · 실시간 케어</p>
     </div>
 
-    <!-- 아이폰 -->
+    <!-- ======================
+         2. 아이폰 UI 블럭
+         👉 나중에 데이터 연결 가능
+    ====================== -->
     <div class="phone">
       <div class="screen">
 
-        <div class="row">수원 → 분당</div>
-        <div class="row">오늘 14:00</div>
+        <!-- 출발/도착 -->
+        <div class="row">
+          수원 → 분당
+        </div>
 
-        <div class="price">32,500원</div>
+        <!-- 시간 -->
+        <div class="row">
+          오늘 14:00
+        </div>
 
-        <div class="cta">
+        <!-- 가격 (JS 연결 예정) -->
+        <div class="price" id="price">
+          32,500원
+        </div>
+
+        <!-- CTA 버튼 -->
+        <div class="cta" id="mainCTA">
           요금 확인하고 예약하기 →
         </div>
 
       </div>
     </div>
 
+    <!-- ======================
+         3. 신뢰 문구
+    ====================== -->
     <div class="trust">
       ✔ 기사 직접 배차 · 단독 이동
     </div>
 
+    <!-- ======================
+         4. 후기 (나중에 자동 스크롤)
+    ====================== -->
     <div class="review">
       🐶 "혼자 이동인데도 안심됐어요"
     </div>
 
   </div>
 
-  <!-- 하단 버튼 -->
+  <!-- ======================
+       5. 하단 버튼 (핵심 CTA)
+       👉 여기에 링크 연결
+  ====================== -->
   <div class="footer">
+
     <div class="buttons">
 
-      <div class="btn store">플레이스토어</div>
-      <div class="btn store">앱스토어</div>
+      <!-- 플레이스토어 -->
+      <div class="btn store" id="playBtn">
+        플레이스토어
+      </div>
 
-      <div class="btn kakao">견주 상담</div>
-      <div class="btn kakao">기사 지원</div>
+      <!-- 앱스토어 -->
+      <div class="btn store" id="appBtn">
+        앱스토어
+      </div>
+
+      <!-- 카카오 견주 -->
+      <div class="btn kakao" id="kakaoUser">
+        견주 상담
+      </div>
+
+      <!-- 카카오 기사 -->
+      <div class="btn kakao" id="kakaoDriver">
+        기사 지원
+      </div>
 
     </div>
+
   </div>
 
 </div>
+
+<!-- ======================
+     6. 기능 영역 (JS)
+     👉 여기만 수정하면 됨
+====================== -->
+<script>
+
+/* ======================
+   가격 랜덤 (옵션)
+====================== */
+/*
+setInterval(()=>{
+  let base = 32000;
+  let rand = Math.floor(Math.random()*4000);
+  document.getElementById("price").innerText =
+    (base + rand).toLocaleString() + "원";
+},3000);
+*/
+
+/* ======================
+   버튼 링크 연결
+====================== */
+
+/* 플레이스토어 */
+document.getElementById("playBtn").onclick = function(){
+  // window.location.href = "플레이스토어 링크";
+}
+
+/* 앱스토어 */
+document.getElementById("appBtn").onclick = function(){
+  // window.location.href = "앱스토어 링크";
+}
+
+/* 카카오 견주 */
+document.getElementById("kakaoUser").onclick = function(){
+  // window.location.href = "카카오 채널 링크";
+}
+
+/* 카카오 기사 */
+document.getElementById("kakaoDriver").onclick = function(){
+  // window.location.href = "카카오 기사 링크";
+}
+
+/* 메인 CTA */
+document.getElementById("mainCTA").onclick = function(){
+  // 👉 앱 or 카카오로 연결
+}
+
+</script>
 
 </body>
 </html>
