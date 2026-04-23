@@ -123,6 +123,36 @@ body {
   color:#000;
 }
 
+/* 이미지 레이어 */
+.visual-wrap {
+  position:relative;
+}
+
+/* 강아지 (왼쪽) */
+.dog {
+  position:absolute;
+  left:-20px;
+  top:20px;
+  width:80px;
+  z-index:2;
+}
+
+/* 춘식이 (오른쪽) */
+.chunsik {
+  position:absolute;
+  right:-20px;
+  top:10px;
+  width:90px;
+  z-index:2;
+}
+
+/* 로고 */
+.logo {
+  width:120px;
+  margin-bottom:5px;
+}
+
+
 </style>
 </head>
 
@@ -136,6 +166,9 @@ body {
   <div>
 
     <div class="header">
+    
+      <img src="logo.png" class="logo">
+      
       <h1>견주 없이도 안전한 펫 이동</h1>
       <p>단독 이동 · 실시간 케어</p>
     </div>
@@ -144,6 +177,11 @@ body {
          2. 아이폰 UI 블럭
          👉 나중에 데이터 연결 가능
     ====================== -->
+<div class="visual-wrap">
+
+  <img src="dog.png" class="dog">
+  <img src="chunsik.png" class="chunsik">
+  
     <div class="phone">
       <div class="screen">
 
@@ -169,6 +207,7 @@ body {
 
       </div>
     </div>
+</div>
 
     <!-- ======================
          3. 신뢰 문구
